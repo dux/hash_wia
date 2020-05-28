@@ -12,6 +12,22 @@ By default `HashWia` is polluting ruby `Hash` object with `to_hwia` method.
 
 It provides easy access to `HashWia` `hash` and `struct` objects.
 
+## Install
+
+To install
+
+`gem install hash_wia`
+
+To use
+
+```ruby
+# Gefile
+gem 'hash_wia'
+
+# to user
+require 'hash_wia'
+```
+
 ## Infifferent + Mash for defined keys
 
 You can convert any hash to Mash hash by using `to_hwia` method on a hash.
