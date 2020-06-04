@@ -97,6 +97,18 @@ describe 'clean hash' do
       expect(h[:a1][:a2].delete(:a3)).to eq(nil)
     end
 
+    it 'can delete keys' do
+      h = { :foo => :bar, bar: :baz }.to_hwia
+      expect(h[:foo]).to eq(:bar)
+      h.delete(:foo)
+      expect(h[:foo]).to eq(nil)
+
+      expect(h[:bar]).to eq(:baz)
+      h.delete('bar')
+      expect(h[:bar]).to eq(nil)
+      expect(h['bar']).to eq(nil)
+    end
+
     it 'can access complex keys' do
       h = { 123 => :foo, String => :bar }.to_hwia
 

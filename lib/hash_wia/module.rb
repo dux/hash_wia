@@ -18,10 +18,15 @@ module HashWiaModule
 
   def []= key, value
     delete key
-    delete key.to_s
-    delete key.to_sym if key.respond_to?(:to_sym)
-
     super key, value
+  end
+
+  def delete key
+    self[key].tap do
+      super key
+      super key.to_s
+      super key.to_sym if key.respond_to?(:to_sym)
+    end
   end
 
   # we never return array from hash, ruby internals
