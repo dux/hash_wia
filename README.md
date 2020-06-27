@@ -64,6 +64,14 @@ mash.foo[:test] = 456
 mash.foo.test   # 456
 ```
 
+Merge
+
+```ruby
+mash.merge! foo: { 'bar' => :baz }
+mash.foo.bar     # baz
+mash[:foo][:bar] # baz
+```
+
 It is basicly Rails Hash with indiferent access + key access on method calls.
 
 #### Assigning a proc
@@ -116,9 +124,9 @@ opt.baz      # nil
 opt.booz = 3 # NoMethodError
 ```
 
-## Dependency
+## Dependencies
 
-none
+None.
 
 ## Development
 

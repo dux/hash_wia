@@ -45,6 +45,12 @@ module HashWiaModule
     Marshal.load(Marshal.dump(self))
   end
 
+  def merge hash
+    dup.tap do |h|
+      hash.each { |k, v| h[k] = v }
+    end
+  end
+
   def method_missing name, *args, &block
     strname = name.to_s
 

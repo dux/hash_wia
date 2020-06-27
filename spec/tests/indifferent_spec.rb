@@ -125,5 +125,15 @@ describe 'clean hash' do
       expect(h[:bar].baz).to eq 123
       expect(h.bar[:baz]).to eq 123
     end
+
+    it 'can merge' do
+      h  = { foo: :bar }.to_hwia
+      nh = h.merge(foo: { jaz: :baz})
+      expect(h.foo).to eq(:bar)
+      expect(nh.foo.jaz).to eq(:baz)
+
+      h.merge!(foo: { jaz: :baz})
+      expect(h.foo.jaz).to eq(:baz)
+    end
   end
 end
