@@ -37,7 +37,7 @@ module HashWiaModule
   # key is common id direct access
   # allow direct get or fuction the same if name given
   def key name=nil
-    name ? self[name] : self[:key]
+    name.nil? ? self[:key] : self[name.to_s]
   end
 
   # true clone of the hash with 0 references to the old one
@@ -67,9 +67,11 @@ module HashWiaModule
         if block
           # h.foo { rand }
           self[name] = block
-        else
+        elsif !keys.include?(name.to_sym)
           # h.foo
-          raise ArgumentError.new('%s not defined' % strname)
+          raise NoMethodError.new('%s not defined' % strname)
+        else
+          nil
         end
       else
         value

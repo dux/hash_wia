@@ -10,6 +10,6 @@ describe 'struct from hash/array' do
   end
 
   it 'expect to rasie argument error' do
-    expect { opt = { foo: 1, bar: 2 }.to_hwia [:foo, :baz] }.to raise_error NoMethodError
+    expect { opt = { foo: 1, bar: 2 }.to_hwia [:foo, :baz] }.to raise_error ArgumentError
   end
 end

@@ -22,7 +22,7 @@ describe 'clean hash' do
     end
 
     it 'raises error when accessing as method for key not found' do
-      expect { h_default.a1.not_found_}.to raise_error ArgumentError
+      expect { h_default.a1.not_found_}.to raise_error NoMethodError
     end
 
     it 'returns list keys and values' do

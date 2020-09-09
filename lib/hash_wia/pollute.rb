@@ -5,13 +5,16 @@ class Hash
     unless args.first
       HashWia.new self
     else
-      list = args.flatten
-      name = 'DynStruct_' + list.join('_')
-      HashWia::STRUCTS[name] ||= ::Struct.new(name, *list)
+      list  = args.flatten
+      extra = keys - list
 
-      HashWia::STRUCTS[name].new.tap do |o|
-        each do |k, v|
-          o.send('%s=' % k, v) unless v.nil?
+      if extra.first
+        raise ArgumentError.new('Unallowed key/s: %s' % extra.map{ |_| ':%s' % _ }.join(', '))
+      end
+
+      HashWia.new.tap do |o|
+        list.each do |k|
+          o[k] = self[k]
         end
       end
     end
