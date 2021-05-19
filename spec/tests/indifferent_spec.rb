@@ -65,11 +65,19 @@ describe 'clean hash' do
     end
 
     it 'it allows special key name' do
-      h = { foo: :bar, keys: :baz }.to_hwia
+      h = { foo: :bar, keys: :baz, size: 453, length: 'foo' }.to_hwia
 
-      expect(h.keys).to eq([:foo, :keys])
+      expect(h.keys).to eq([:foo, :keys, :size, :length])
       expect(h[:keys]).to eq(:baz)
       expect(h['keys']).to eq(:baz)
+
+      expect(h.size).to eq(453)
+      expect(h[:size]).to eq(453)
+
+      expect(h.length).to eq('foo')
+      expect(h['length']).to eq('foo')
+
+      expect(h.keys.length).to eq(4)
     end
 
     it 'can add proc to hash' do

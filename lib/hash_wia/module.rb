@@ -5,6 +5,13 @@ module HashWiaModule
     end
   end
 
+  # overload common key names with
+  %i(size length zip minmax store cycle chunk sum uniq chain).each do |el|
+    define_method el do
+      self[el]
+    end
+  end
+
   def [] key
     data = super key
     data = super key.to_s if data.nil?
