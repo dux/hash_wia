@@ -18,7 +18,9 @@ module HashWiaModule
     data = super key.to_sym if key.respond_to?(:to_sym) && data.nil?
 
     # if we are returning hash as a value, just include with wia methods hash
-    data.extend HashWiaModule if data.is_a?(Hash)
+    if data.is_a?(Hash)
+      data.extend HashWiaModule
+    end
 
     data
   end
@@ -56,6 +58,18 @@ module HashWiaModule
     dup.tap do |h|
       hash.each { |k, v| h[k] = v }
     end
+  end
+
+  def each &block
+    to_a.each do |key, data|
+      if data.is_a?(Hash)
+        data.extend HashWiaModule
+      end
+
+      block.call key, data
+    end
+
+    self
   end
 
   def method_missing name, *args, &block
