@@ -124,6 +124,17 @@ opt.baz      # nil
 opt.booz = 3 # NoMethodError
 ```
 
+## Freeze keys
+
+You can freeze Hash keys and raise `NoMethodErorr` if new key is added.
+
+```ruby
+opt = {foo: nil, bar: 2}.to_hwia.freeze_keys!
+opt.bar       # 2
+opt.baz   = 3 # NoMethodErorr
+opt[:baz] = 3 # NoMethodErorr
+```
+
 ## Dependencies
 
 None.

@@ -19,4 +19,11 @@ describe 'struct from hash/array' do
     h2 = h1.to_hwia :foo, :bar, :baz
     expect { h2.to_hwia :foo, :bar }.to raise_error ArgumentError
   end
+
+  it 'can be locked' do
+    data = { foo: 1, bar: 2 }.to_hwia.freeze_keys!
+    expect(data.foo).to eq(1)
+    expect{ data[:baz] = 3 }.to raise_error NoMethodError
+    expect{ data.baz = 3 }.to raise_error NoMethodError
+  end
 end

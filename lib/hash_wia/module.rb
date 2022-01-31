@@ -26,6 +26,10 @@ module HashWiaModule
   end
 
   def []= key, value
+    if @frozen_keys
+      raise NoMethodError, "Hash keys are frozen and can't be modified"
+    end
+
     delete key
     super key, value
   end
@@ -58,6 +62,11 @@ module HashWiaModule
     dup.tap do |h|
       hash.each { |k, v| h[k] = v }
     end
+  end
+
+  def freeze_keys!
+    @frozen_keys = true
+    self
   end
 
   def each &block
