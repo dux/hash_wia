@@ -100,8 +100,10 @@ Great for controller class instance variables and other options.
 
 ```ruby
 h = {}.to_hwia :foo
+h.foo       # nil
 h.foo = 123 # ok
-h.bar = 123 # NoMethodError
+h.bar       # NoMethodError
+h.foo       # 123
 ```
 
 Examples
@@ -110,7 +112,6 @@ Examples
 # From array
 opt = { foo: 1 }.to_hwia :foo, :bar
 opt.bar = 2
-opt.baz = 3 # NoMethodError
 
 # allows set on second level
 opt.foo = { bar: :baz }
@@ -121,7 +122,7 @@ opt = {foo: nil, bar: 2}.to_hwia [:foo, :bar, :baz]
 opt.foo      # 1
 opt.bar      # 2
 opt.baz      # nil
-opt.booz = 3 # NoMethodError
+opt.booz     # NoMethodError
 ```
 
 ## Freeze keys

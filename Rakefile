@@ -1,7 +1,7 @@
 desc 'Console with loaded gem'
 task :console do
   require 'pry'
-  require './lib/clean-hash'
+  require './lib/hash_wia'
 
   pry
 end
