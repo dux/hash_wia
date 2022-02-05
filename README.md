@@ -140,15 +140,27 @@ opt[:baz] = 3 # NoMethodErorr
 
 Easy way to set up option constants in your APP, in a proteced namespace without class polution.
 
+Constant points to keyword and keyword points to a name
+
 ```ruby
 class Task
-  # to create Task::STATUS and Task.status
+  # to create Task::STATUS and Task.status (default)
   HashWia self, :status do |opt|
     opt.QUED    q: 'Qued'
     opt.RUNNING r: 'Running'
     opt.DONE    d: 'Done'
     opt.FAILED  e: 'Failed'
     opt.DEAD    x: 'Dead'
+    # or use numbers
+    opt.ACTIVE  1 => 'Task is active'
+  end
+
+  # to omit constant creation
+  HashWia self, :status, constant: false do |opt|
+  end
+
+  # to link to constant only
+  STATUS = HashWia do |opt|
   end
 end
 
@@ -161,6 +173,9 @@ end
 # Task.status.d    # 'Done'
 # Task.status[:d]  # 'Done'
 # Task.status['d'] # 'Done'
+#
+# Task.status.ACTIVE # 1
+# Task.status[1]     # 'Task is active'
 ```
 
 * If yoo do not want to create constants and class method, you can just get a hash.
@@ -170,17 +185,11 @@ end
 # first 2 attributes are names that can be switched
 # last argument is a name
 STATUS = HashWia do |opt|
-  opt.set :d, 'DONE', 'Done'
-  # same
   opt.set 'DONE', 'd', 'Done'
   # same
-  opt.DONE :d, 'Done'
-  # same
-  opt.d, 'DONE',  'Done'
-  # same
   opt.DONE d: 'Done'
-  # same
-  opt.d DONE: 'Done'
+  # or use numbers as keys
+  opt.ACTIVE 1 => 'Venue is active'
 end
 ```
 

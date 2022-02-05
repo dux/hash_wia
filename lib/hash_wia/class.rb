@@ -8,18 +8,17 @@ class HashWia
       @hash = hash
     end
 
-    def set code, constant, name = nil
-      unless name
-        name = constant.keys.first
-        constant = constant.values.first
+    def set constant, code, name
+      if code.class == Symbol
+        code = code.to_s
       end
 
-      @hash[code.to_s]     = name.to_s
-      @hash[constant.to_s] = code.to_s
+      @hash[constant.to_s] = code
+      @hash[code]          = name.to_s
     end
 
-    def method_missing code, *args
-      self.set code, *args
+    def method_missing code, key_val
+      self.set code, key_val.keys.first, key_val.values.first
     end
   end
 end
@@ -31,15 +30,18 @@ end
 # HashWia do |opt|
 #   opt.DONE d: 'Done'
 #   # or
-#   opt.DONE :d, 'Done'
+#   opt.set 'DONE', :d, 'Done'
 # end
-def HashWia klass = nil, name = nil
+def HashWia klass = nil, name = nil, opts = nil
   if block_given?
     hash = HashWia.new
 
     if name
-      constant = name.to_s.upcase
-      klass.const_set constant, hash
+      if !opts || opts[:constant] != false
+        constant = name.to_s.upcase
+        klass.const_set constant, hash
+      end
+
       klass.define_singleton_method(name) { klass.const_get(constant) }
     end
 
