@@ -20,10 +20,23 @@ describe 'struct from hash/array' do
     expect { h2.to_hwia :foo, :bar }.to raise_error ArgumentError
   end
 
-  it 'can be locked' do
-    data = { foo: 1, bar: 2 }.to_hwia.freeze_keys!
-    expect(data.foo).to eq(1)
-    expect{ data[:baz] = 3 }.to raise_error NoMethodError
-    expect{ data.baz = 3 }.to raise_error NoMethodError
+  context 'with frozen keys' do
+    it 'can be locked' do
+      data = { foo: 1, bar: 1 }.to_hwia.freeze_keys!
+      expect(data.foo).to eq(1)
+      expect{ data[:baz] = 3 }.to raise_error NoMethodError
+      expect{ data.baz = 3 }.to raise_error NoMethodError
+    end
+
+    it 'freezes keys after set' do
+      data = {}.to_hwia :foo, :bar
+      expect {data.baz = true}.to raise_error NoMethodError
+    end
+
+    it 'can modify keys that allready exist' do
+      data = { foo: 1, bar: 1 }.to_hwia.freeze_keys!
+      expect{ data.bar = 2 }.not_to raise_error
+      expect(data.bar).to eq(2)
+    end
   end
 end

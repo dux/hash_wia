@@ -26,8 +26,8 @@ module HashWiaModule
   end
 
   def []= key, value
-    if @frozen_keys
-      raise NoMethodError, "Hash keys are frozen and can't be modified"
+    if @frozen_keys && !keys.include?(key)
+      raise NoMethodError, "HashWia keys are frozen and can't be modified (key: #{key})"
     end
 
     delete key

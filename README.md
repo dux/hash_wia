@@ -167,9 +167,9 @@ end
 # Enables following access
 # Task::STATUS.FOO  # NoMethodError for not defined constants
 #
-# Task::STATUS.DONE # 'd'
+# Task::STATUS.DONE # :d
 #
-# Task.status.DONE # 'd'
+# Task.status.DONE # :d
 # Task.status.d    # 'Done'
 # Task.status[:d]  # 'Done'
 # Task.status['d'] # 'Done'

@@ -19,11 +19,11 @@ end
 describe 'named options' do
   context 'defines class method' do
     it 'creates class constant' do
-      expect(Foo::BAR.BAZ).to eq('b')
+      expect(Foo::BAR.BAZ).to eq(:b)
     end
 
     it 'creates class method to access constant' do
-      expect(Foo.bar.BAZ).to eq('b')
+      expect(Foo.bar.BAZ).to eq(:b)
     end
 
     it 'is accesible via native constant' do
@@ -41,11 +41,11 @@ describe 'named options' do
 
   context 'does not pollute' do
     it 'creates via set' do
-      expect(Foo::OPTS.OPTA).to eq('a')
+      expect(Foo::OPTS.OPTA).to eq(:a)
     end
 
     it 'creates via method missing' do
-      expect(Foo::OPTS.OPTB).to eq('b')
+      expect(Foo::OPTS.OPTB).to eq(:b)
     end
 
     it 'gets name via code' do

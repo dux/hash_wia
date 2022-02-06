@@ -9,10 +9,6 @@ class HashWia
     end
 
     def set constant, code, name
-      if code.class == Symbol
-        code = code.to_s
-      end
-
       @hash[constant.to_s] = code
       @hash[code]          = name.to_s
     end

@@ -16,6 +16,8 @@ class Hash
         list.each do |k|
           o[k] = self[k]
         end
+
+        o.freeze_keys!
       end
     end
   end
