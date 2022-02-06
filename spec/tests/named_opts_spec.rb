@@ -14,6 +14,10 @@ class Foo
     opt.OPTB b: 'B name'
     opt.ACTIVE 1 => 'Active foo'
   end
+
+  UNFOROZEN = HashWia freeze: false do |opt|
+    opt.ONE 1 => 'one'
+  end
 end
 
 describe 'named options' do
@@ -51,6 +55,14 @@ describe 'named options' do
     it 'gets name via code' do
       expect(Foo::OPTS[:b]).to eq('B name')
       expect(Foo::OPTS['b']).to eq('B name')
+    end
+
+    it 'ensures hash is frozen' do
+      expect{Foo::OPTS.ACTIVE = 2}.to raise_error FrozenError
+    end
+
+    it 'does not freeze if freeze false option given' do
+      expect{Foo::UNFOROZEN.ONE = 2}.not_to raise_error
     end
   end
 end

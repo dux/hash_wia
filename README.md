@@ -138,9 +138,9 @@ opt[:baz] = 3 # NoMethodErorr
 
 ## Set named options
 
-Easy way to set up option constants in your APP, in a proteced namespace without class polution.
+Easy way to set up option constants in your APP, in a proteced namespace without class polution, frozen.
 
-Constant points to keyword and keyword points to a name
+Constant points to keyword and keyword points to a name.
 
 ```ruby
 class Task

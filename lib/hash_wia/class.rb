@@ -32,6 +32,11 @@ def HashWia klass = nil, name = nil, opts = nil
   if block_given?
     hash = HashWia.new
 
+    if klass.class == Hash
+      opts = klass
+      klass = nil
+    end
+
     if name
       if !opts || opts[:constant] != false
         constant = name.to_s.upcase
@@ -43,6 +48,11 @@ def HashWia klass = nil, name = nil, opts = nil
 
     named_opts = HashWia::NamedOptions.new hash
     yield named_opts
+
+    if !opts || opts[:freeze] != false
+      hash.freeze
+    end
+
     hash
   else
     raise ArgumentError, 'Block not provided'
