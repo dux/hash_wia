@@ -145,7 +145,7 @@ Constant points to keyword and keyword points to a name.
 ```ruby
 class Task
   # to create Task::STATUS and Task.status (default)
-  HashWia self, :status do |opt|
+  STATUS = HashWia self, method: :status do |opt|
     opt.QUED    q: 'Qued'
     opt.RUNNING r: 'Running'
     opt.DONE    d: 'Done'
@@ -153,14 +153,6 @@ class Task
     opt.DEAD    x: 'Dead'
     # or use numbers
     opt.ACTIVE  1 => 'Task is active'
-  end
-
-  # to omit constant creation
-  HashWia self, :status, constant: false do |opt|
-  end
-
-  # to link to constant only
-  STATUS = HashWia do |opt|
   end
 end
 
@@ -178,19 +170,23 @@ end
 # Task.status[1]     # 'Task is active'
 ```
 
-* If yoo do not want to create constants and class method, you can just get a hash.
-* you can set values directly via set
+You can create a constant for every key as well
 
 ```ruby
-# first 2 attributes are names that can be switched
-# last argument is a name
-STATUS = HashWia do |opt|
-  opt.set 'DONE', 'd', 'Done'
-  # same
-  opt.DONE d: 'Done'
-  # or use numbers as keys
-  opt.ACTIVE 1 => 'Venue is active'
+class Foo
+  STATUS = HashWia self, constants: :status, method: :status do |opt|
+    opt.INACTIVE 0 => 'Inactive object'
+    opt.ACTIVE   1 => 'Active object'
+    opt.DEAD     2 => 'Dead object'
+  end
 end
+
+# would generate
+# Foo::STATUS[1]       # => 'Active object'
+# Foo::STATUS.ACTIVE   # 1
+# Foo::STATUS_INACTIVE # 0
+# Foo::STATUS_ACTIVE   # 1
+# Foo::STATUS_DEAD     # 2
 ```
 
 ## Dependencies

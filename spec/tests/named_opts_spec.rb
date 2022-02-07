@@ -1,11 +1,11 @@
 require_relative '../loader'
 
 class Foo
-  HashWia self, :bar do |opt|
+  BAR = HashWia self, method: :bar do |opt|
     opt.BAZ b: 'Baz'
   end
 
-  HashWia self, :baz, constant: false do |opt|
+  HashWia self, method: :baz do |opt|
     opt.VAL b: 'Value'
   end
 
@@ -17,6 +17,15 @@ class Foo
 
   UNFOROZEN = HashWia freeze: false do |opt|
     opt.ONE 1 => 'one'
+  end
+
+  # creates
+  # STATUS_INACTIVE # => 0
+  # ...
+  STATUS = HashWia self, constants: :status do |opt|
+    opt.INACTIVE 0 => 'Inactive object'
+    opt.ACTIVE   1 => 'Active object'
+    opt.DEAD     2 => 'Dead object'
   end
 end
 
@@ -63,6 +72,14 @@ describe 'named options' do
 
     it 'does not freeze if freeze false option given' do
       expect{Foo::UNFOROZEN.ONE = 2}.not_to raise_error
+    end
+
+    it 'creates constants' do
+      expect(Foo::STATUS[1]).to eq('Active object')
+      expect(Foo::STATUS.ACTIVE).to eq(1)
+      expect(Foo::STATUS_INACTIVE).to eq(0)
+      expect(Foo::STATUS_ACTIVE).to eq(1)
+      expect(Foo::STATUS_DEAD).to eq(2)
     end
   end
 end

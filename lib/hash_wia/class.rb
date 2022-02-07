@@ -4,13 +4,15 @@ end
 
 class HashWia
   class NamedOptions
-    def initialize hash
-      @hash = hash
+    def initialize hash, &block
+      @hash  = hash
+      @block = block
     end
 
-    def set constant, code, name
+    def set constant, code, value
+      @block.call constant.to_s, code, value
       @hash[constant.to_s] = code
-      @hash[code]          = name.to_s
+      @hash[code]          = value
     end
 
     def method_missing code, key_val
@@ -28,7 +30,7 @@ end
 #   # or
 #   opt.set 'DONE', :d, 'Done'
 # end
-def HashWia klass = nil, name = nil, opts = nil
+def HashWia klass = nil, opts = nil
   if block_given?
     hash = HashWia.new
 
@@ -37,19 +39,25 @@ def HashWia klass = nil, name = nil, opts = nil
       klass = nil
     end
 
-    if name
-      if !opts || opts[:constant] != false
-        constant = name.to_s.upcase
-        klass.const_set constant, hash
-      end
+    opts ||= {}
 
-      klass.define_singleton_method(name) { klass.const_get(constant) }
+    named_opts = HashWia::NamedOptions.new hash do |constant, code, value|
+      if opts[:constants]
+        if klass
+          klass.const_set "#{opts[:constants]}_#{constant}".upcase, code
+        else
+          raise "Host class not given (call as HashWia self, constants: ...)"
+        end
+      end
     end
 
-    named_opts = HashWia::NamedOptions.new hash
     yield named_opts
 
-    if !opts || opts[:freeze] != false
+    if opts[:method]
+      klass.define_singleton_method(opts[:method]) { hash }
+    end
+
+    unless opts[:freeze] == false
       hash.freeze
     end
 
