@@ -99,6 +99,20 @@ describe 'clean hash' do
       expect(data).to eq([:a1, :b1])
     end
 
+    it 'each yields right class' do
+      data = {
+        a: {
+          b: {
+            c: 1
+          }
+        }
+      }.to_hwia
+
+      for k, v in data.a
+        expect(v.c).to eq(1)
+      end
+    end
+
     it 'deletes a key' do
       h = h_default
       h[Hash] = 123
