@@ -1,3 +1,4 @@
 .bundle
+.history/
 ./tmp
 Gemfile.lock

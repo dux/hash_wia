@@ -13,33 +13,37 @@ module HashWiaModule
   end
 
   def [] key
-    data = super key
-    data = super key.to_s if data.nil?
-    data = super key.to_sym if key.respond_to?(:to_sym) && data.nil?
-
+    data = super(key.to_s)
+    data = super(key) if data.nil? 
     # if we are returning hash as a value, just include with wia methods hash
     if data.is_a?(Hash)
       data.extend HashWiaModule
+      data
+    else
+      data
     end
-
-    data
   end
 
   def []= key, value
+    key = key.to_s
+  
     if @frozen_keys && !keys.include?(key)
       raise FrozenError, "HashWia keys are frozen and can't be modified (key: #{key})"
     end
 
-    delete key
     super key, value
   end
 
+  def __val key
+    data = self[key.to_s]
+    data = self[to_s] if data.nil?
+    data
+  end
+
   def delete key
-    self[key].tap do
-      super key
-      super key.to_s
-      super key.to_sym if key.respond_to?(:to_sym)
-    end
+    data = super(key.to_s)
+    data = super(key) if data.nil?
+    data
   end
 
   # we never return array from hash, ruby internals
@@ -49,7 +53,7 @@ module HashWiaModule
 
   # key is common id direct access
   # allow direct get or fuction the same if name given
-  def key name=nil
+  def key name = nil
     name.nil? ? self[:key] : self[name.to_s]
   end
 
@@ -60,8 +64,12 @@ module HashWiaModule
 
   def merge hash
     dup.tap do |h|
-      hash.each { |k, v| h[k] = v }
+      hash.each { |k, v| h[k.to_s] = v }
     end
+  end
+
+  def merge! hash
+    hash.each { |k, v| self[k.to_s] = v }
   end
 
   def freeze_keys!
@@ -89,19 +97,20 @@ module HashWiaModule
       !!self[strname]
     elsif strname.sub!(/=$/, '')
       # h.foo = :bar
-      self[strname.to_sym] = args.first
+      self[strname] = args.first
     else
       value = self[strname]
+      value = self[strname.to_sym] if value.nil?
 
       if value.nil?
         if block
-          # h.foo { rand }
-          self[name] = block
-        elsif !keys.include?(name.to_sym)
-          # h.foo
-          raise NoMethodError.new('%s not defined' % strname)
+          self[strname.to_s] = block
         else
-          nil
+          if key?(strname) || key(strname.to_sym)
+            nil
+          else
+            raise NoMethodError.new('%s not defined in HashWia' % strname)
+          end
         end
       else
         value

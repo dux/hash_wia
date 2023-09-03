@@ -67,7 +67,7 @@ describe 'clean hash' do
     it 'it allows special key name' do
       h = { foo: :bar, keys: :baz, size: 453, length: 'foo' }.to_hwia
 
-      expect(h.keys).to eq([:foo, :keys, :size, :length])
+      expect(h.keys).to eq(['foo', 'keys', 'size', 'length'])
       expect(h[:keys]).to eq(:baz)
       expect(h['keys']).to eq(:baz)
 
@@ -96,7 +96,7 @@ describe 'clean hash' do
         data.push k
       end
 
-      expect(data).to eq([:a1, :b1])
+      expect(data).to eq(%w(a1 b1))
     end
 
     it 'each yields right class' do
@@ -108,13 +108,15 @@ describe 'clean hash' do
         }
       }.to_hwia
 
-      for k, v in data.a
-        expect(v.c).to eq(1)
+      for k, v in data
+        expect(v.b.c).to eq(1)
       end
     end
 
     it 'deletes a key' do
       h = h_default
+
+      
       h[Hash] = 123
 
       expect(h[:a1][:a2].delete(:a3)).to eq(:a3_foo)
@@ -156,10 +158,12 @@ describe 'clean hash' do
     it 'can merge' do
       h  = { foo: :bar }.to_hwia
       nh = h.merge(foo: { jaz: :baz})
+
       expect(h.foo).to eq(:bar)
       expect(nh.foo.jaz).to eq(:baz)
 
       h.merge!(foo: { jaz: :baz})
+
       expect(h.foo.jaz).to eq(:baz)
     end
   end

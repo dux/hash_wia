@@ -2,11 +2,11 @@ class Hash
   # { foo: :bar }.to_hwia            #
   # { foo: :bar }.to_hwia :foo, :bar # create struct and fill
   def to_hwia *args
-    unless args.first
+    if args.first.nil?
       HashWia.new self
     else
-      list  = args.flatten
-      extra = keys - list
+      list  = args.map(&:to_s).flatten
+      extra = keys.map(&:to_s) - list
 
       if extra.first
         raise ArgumentError.new('Unallowed key/s: %s' % extra.map{ |_| ':%s' % _ }.join(', '))
@@ -15,6 +15,7 @@ class Hash
       HashWia.new.tap do |o|
         list.each do |k|
           o[k] = self[k]
+          o[k] = self[k.to_sym] if o[k].nil?
         end
 
         o.freeze_keys!
