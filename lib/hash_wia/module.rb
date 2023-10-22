@@ -89,6 +89,17 @@ module HashWiaModule
     self
   end
 
+  def dig *args
+    root = self
+    while args[0]
+      key = args.shift
+      root = root[key] || root[key.to_s]
+      return if root.nil?
+      root = HashWia.new root if root.class == Hash
+    end
+    root
+  end
+
   def method_missing name, *args, &block
     strname = name.to_s
 
