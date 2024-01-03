@@ -13,9 +13,11 @@ module HashWiaModule
   end
 
   def [] key
-    data = super(key.to_s)
-    data = super(key) if data.nil? 
-    # if we are returning hash as a value, just include with wia methods hash
+    data = super(key)
+    skey = key.to_s
+    data = super(skey) if data.nil?
+    data = super(skey.to_sym) if data.nil? && key.class != Symbol
+
     if data.is_a?(Hash)
       data.extend HashWiaModule
       data
@@ -25,12 +27,8 @@ module HashWiaModule
   end
 
   def []= key, value
-    key = key.to_s
+    key = key.to_s unless key.class == Symbol
   
-    if @frozen_keys && !keys.include?(key)
-      raise FrozenError, "HashWia keys are frozen and can't be modified (key: #{key})"
-    end
-
     super key, value
   end
 
@@ -41,8 +39,10 @@ module HashWiaModule
   end
 
   def delete key
-    data = super(key.to_s)
-    data = super(key) if data.nil?
+    data = super(key)
+    skey = key.to_s
+    data = super(skey) if data.nil?
+    data = super(skey.to_sym) if data.nil? && key.class != Symbol
     data
   end
 
@@ -70,11 +70,6 @@ module HashWiaModule
 
   def merge! hash
     hash.each { |k, v| self[k.to_s] = v }
-  end
-
-  def freeze_keys!
-    @frozen_keys = true
-    self
   end
 
   def each &block

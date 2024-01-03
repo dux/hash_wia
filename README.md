@@ -125,17 +125,6 @@ opt.baz      # nil
 opt.booz     # NoMethodError
 ```
 
-## Freeze keys
-
-You can freeze Hash keys and raise `NoMethodErorr` if new key is added.
-
-```ruby
-opt = {foo: nil, bar: 2}.to_hwia.freeze_keys!
-opt.bar       # 2
-opt.baz   = 3 # NoMethodErorr
-opt[:baz] = 3 # NoMethodErorr
-```
-
 ## Set named options
 
 Easy way to set up option constants in your APP, in a proteced namespace without class polution, frozen.

@@ -17,8 +17,6 @@ class Hash
           o[k] = self[k]
           o[k] = self[k.to_sym] if o[k].nil?
         end
-
-        o.freeze_keys!
       end
     end
   end

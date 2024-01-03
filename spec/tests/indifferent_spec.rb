@@ -67,7 +67,7 @@ describe 'clean hash' do
     it 'it allows special key name' do
       h = { foo: :bar, keys: :baz, size: 453, length: 'foo' }.to_hwia
 
-      expect(h.keys).to eq(['foo', 'keys', 'size', 'length'])
+      expect(h.keys).to eq([:foo, :keys, :size, :length])
       expect(h[:keys]).to eq(:baz)
       expect(h['keys']).to eq(:baz)
 
@@ -96,7 +96,7 @@ describe 'clean hash' do
         data.push k
       end
 
-      expect(data).to eq(%w(a1 b1))
+      expect(data).to eq(%i(a1 b1))
     end
 
     it 'each yields right class' do
