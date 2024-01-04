@@ -28,14 +28,7 @@ module HashWiaModule
 
   def []= key, value
     key = key.to_s unless key.class == Symbol
-  
     super key, value
-  end
-
-  def __val key
-    data = self[key.to_s]
-    data = self[to_s] if data.nil?
-    data
   end
 
   def delete key
@@ -54,7 +47,7 @@ module HashWiaModule
   # key is common id direct access
   # allow direct get or fuction the same if name given
   def key name = nil
-    name.nil? ? self[:key] : self[name.to_s]
+    self[name.nil? ? :key : name]
   end
 
   # true clone of the hash with 0 references to the old one
