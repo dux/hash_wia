@@ -21,14 +21,14 @@ To install
 To use
 
 ```ruby
-# Gefile
+# Gemfile
 gem 'hash_wia'
 
-# to user
+# to use
 require 'hash_wia'
 ```
 
-## Infifferent + Mash for defined keys
+## Indifferent + Mash for defined keys
 
 You can convert any hash to Mash hash by using `to_hwia` method on a hash.
 
@@ -51,9 +51,9 @@ mash[:foo].bar     #  123
 mash[:foo].not_def #  ArgumentError
 
 # As configuration
-Lux.config.google = YAML.load('./config/google.yml').to_hwia
+Lux.config.google = YAML.load('./config/google.yml')
 Lux.config.google.oauth.key  # ok
-Lux.config.google.oauth.name # ArgumentError
+Lux.config.google.oauth.foo  # ArgumentError
 ```
 
 Add new value to a key
