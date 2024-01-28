@@ -116,7 +116,7 @@ describe 'clean hash' do
     it 'deletes a key' do
       h = h_default
 
-      
+
       h[Hash] = 123
 
       expect(h[:a1][:a2].delete(:a3)).to eq(:a3_foo)
@@ -165,6 +165,21 @@ describe 'clean hash' do
       h.merge!(foo: { jaz: :baz})
 
       expect(h.foo.jaz).to eq(:baz)
+    end
+
+    it 'deletes key on method set' do
+      h = {}.to_hwia
+      h[:foo] = 123
+      h.foo = 456
+      expect(h.foo).to eq(456)
+      expect(h[:foo]).to eq(456)
+      expect(h['foo']).to eq(456)
+    end
+
+    it 'converts to string unless key is symbol' do
+      h = {}.to_hwia
+      h[123] = 456
+      expect(h['123']).to eq(456)
     end
   end
 end

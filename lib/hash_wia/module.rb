@@ -28,6 +28,7 @@ module HashWiaModule
 
   def []= key, value
     key = key.to_s unless key.class == Symbol
+    delete(key.to_s).nil? && delete(key.to_sym)
     super key, value
   end
 
