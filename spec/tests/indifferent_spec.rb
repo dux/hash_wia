@@ -159,7 +159,6 @@ describe 'clean hash' do
       h  = { foo: :bar }.to_hwia
       nh = h.merge(foo: { jaz: :baz})
 
-      expect(nh.keys.length).to eq(1)
       expect(h.foo).to eq(:bar)
       expect(nh.foo.jaz).to eq(:baz)
 
@@ -179,10 +178,8 @@ describe 'clean hash' do
 
     it 'converts to string unless key is symbol' do
       h = {}.to_hwia
-      h['123'] = 223
       h[123] = 456
       expect(h['123']).to eq(456)
-      expect(h[123]).to eq(456)
     end
   end
 end

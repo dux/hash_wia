@@ -3,7 +3,7 @@ class Hash
   # { foo: :bar }.to_hwia :foo, :bar # create struct and fill
   def to_hwia *args
     if args.first.nil?
-      self.extend HashWiaModule
+      HashWia.new self
     else
       list  = args.map(&:to_s).flatten
       extra = keys.map(&:to_s) - list

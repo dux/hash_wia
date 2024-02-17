@@ -1,4 +1,10 @@
 module HashWiaModule
+  def initialize hash=nil
+    if hash
+      hash.each { |k,v| self[k] = v }
+    end
+  end
+
   # overload common key names with
   %i(size length zip minmax store cycle chunk sum uniq chain).each do |el|
     define_method el do
@@ -51,11 +57,9 @@ module HashWiaModule
   end
 
   def merge hash
-    dup
-      .extend(HashWiaModule)
-      .tap do |h|
-        hash.each { |k, v| h[k.to_s] = v }
-      end
+    dup.tap do |h|
+      hash.each { |k, v| h[k.to_s] = v }
+    end
   end
 
   def merge! hash
