@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hash_wia (0.8.2)
+    hash_wia (0.8.4)
 
 GEM
   remote: http://rubygems.org/
