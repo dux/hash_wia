@@ -116,7 +116,6 @@ describe 'clean hash' do
     it 'deletes a key' do
       h = h_default
 
-
       h[Hash] = 123
 
       expect(h[:a1][:a2].delete(:a3)).to eq(:a3_foo)

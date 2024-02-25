@@ -13,17 +13,10 @@ module HashWiaModule
   end
 
   def [] key
-    data = super(key)
-    skey = key.to_s
-    data = super(skey) if data.nil?
-    data = super(skey.to_sym) if data.nil? && key.class != Symbol
-
-    if data.is_a?(Hash)
-      data.extend HashWiaModule
-      data
-    else
-      data
-    end
+    key = key.to_s unless key.respond_to?(:to_sym)
+    data = super(key.to_s) || super(key.to_sym)
+    data.extend HashWiaModule if data.is_a?(Hash)
+    data
   end
 
   def []= key, value
