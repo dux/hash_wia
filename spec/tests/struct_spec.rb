@@ -17,6 +17,6 @@ describe 'struct from hash/array' do
     data = { foo: 1, bar: 2, baz: 3 }
     h1 = data.to_hwia
     h2 = h1.to_hwia :foo, :bar, :baz
-    expect { h2.to_hwia :foo, :bar }.to raise_error ArgumentError
+    expect { h2.to_hwia :foo, :bar }.to raise_error NoMethodError
   end
 end

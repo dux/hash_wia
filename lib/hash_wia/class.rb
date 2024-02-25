@@ -3,6 +3,8 @@ class HashWia < Hash
 end
 
 class HashWia
+  STRUCTS = {}
+
   class NamedOptions
     def initialize hash, &block
       @hash  = hash

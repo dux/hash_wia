@@ -5,19 +5,10 @@ class Hash
     if args.first.nil?
       HashWia.new self
     else
-      list  = args.map(&:to_s).flatten
-      extra = keys.map(&:to_s) - list
-
-      if extra.first
-        raise ArgumentError.new('Unallowed key/s: %s' % extra.map{ |_| ':%s' % _ }.join(', '))
-      end
-
-      HashWia.new.tap do |o|
-        list.each do |k|
-          o[k] = self[k]
-          o[k] = self[k.to_sym] if o[k].nil?
-        end
-      end
+      list = args.flatten
+      name = 'DynStruct_' + list.join('_')
+      HashWia::STRUCTS[name] ||= ::Struct.new(name, *list)
+      HashWia::STRUCTS[name].new **self
     end
   end
 end
