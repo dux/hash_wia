@@ -82,6 +82,12 @@ module HashWiaModule
     root
   end
 
+  def values
+    super.map do |el|
+      el.class == Hash ? HashWia.new(el) : el
+    end
+  end
+
   def method_missing name, *args, &block
     strname = name.to_s
 
