@@ -113,6 +113,20 @@ describe 'clean hash' do
       end
     end
 
+    it 'each works on list of hashes' do
+      data = {
+        a: {
+          b: [{
+            foo: 123
+          }]
+        }
+      }.to_hwia
+
+      for el in data.a.b
+        expect(el.foo).to eq(123)
+      end
+    end
+
     it 'deletes a key' do
       h = h_default
 

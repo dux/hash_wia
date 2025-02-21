@@ -1,5 +1,5 @@
 module HashWiaModule
-  def initialize hash=nil
+  def initialize hash = nil
     if hash
       hash.each { |k,v| self[k] = v }
     end
@@ -112,7 +112,13 @@ module HashWiaModule
           end
         end
       else
-        value
+        case value
+        when Array
+          # if we return list oh hashes, convert it to hwia
+          value.map {|el| el.class == Hash ? HashWia.new(el) : el }
+        else
+          value
+        end
       end
     end
   end
