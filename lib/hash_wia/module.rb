@@ -112,13 +112,10 @@ module HashWiaModule
           end
         end
       else
-        case value
-        when Array
-          # if we return list oh hashes, convert it to hwia
-          value.map {|el| el.class == Hash ? HashWia.new(el) : el }
-        else
-          value
+        if value.class == Array
+          value.map! {|el| el.class == Hash ? HashWia.new(el) : el }
         end
+        value
       end
     end
   end

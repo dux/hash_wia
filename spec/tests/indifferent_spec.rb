@@ -194,5 +194,23 @@ describe 'clean hash' do
       h[123] = 456
       expect(h['123']).to eq(456)
     end
+
+    it 'returns nested hash as as hwia' do
+      h1 = {
+        foo: {
+          bar: :baz
+        }
+      }.to_hwia
+
+      h2 = h1[:foo]
+      expect(h2.is_a?(HashWiaModule)).to eq(true)
+    end
+
+    it 'can push to array' do
+      h = {foo: []}.to_hwia
+      h[:foo].push 1
+      h.foo.push 2
+      expect(h.foo).to eq([1, 2])
+    end
   end
 end
